@@ -13,6 +13,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     //proxyTable: proxyConfig.proxyList,
+    //代理解决跨域问题
     proxyTable: {
       '/banner': {
         // target: 'http://localhost:3000/mock/11'

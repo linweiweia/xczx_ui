@@ -38,13 +38,14 @@ export default {
       list: [],
       total: 50,
       params: {
-        page: 4,
-        size: 2
+        page: 1,    //默认第一页
+        size: 10    //这个用户选择每页显示多少条
       }
     };
   },
   methods: {
-    changePage: function() {
+    changePage: function(page) {
+      this.params.page = page
       this.query();
     },
     query: function() {
