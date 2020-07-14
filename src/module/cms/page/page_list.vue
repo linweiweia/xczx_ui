@@ -1,6 +1,21 @@
 <template>
   <div>
+    <el-select v-model="params.siteId" placeholder="请选择站点">
+      <el-option
+        v-for="item in siteList"
+        :key="item.siteId"
+        :label="item.siteName"
+        :value="item.siteId">
+      </el-option>
+    </el-select>
+    页面别名：<el-input v-model="params.pageAliase"  style="width: 100px"></el-input>
     <el-button type="primary" @click="query">查询</el-button>
+
+    <!--点击就会跳到路由-->
+    <router-link :to="{path:'/cms/page/add', query:{page:this.params.page,siteId:this.params.siteId}}">
+      <el-button type="primary">新增</el-button>
+    </router-link>
+
     <el-table :data="list" style="width: 100%">
       <el-table-column type="index" width="60"></el-table-column>
       <el-table-column prop="pageName" label="页面名称" width="120"></el-table-column>
@@ -35,11 +50,14 @@ import * as cmsApi from '../api/cms'
 export default {
   data() {
     return {
-      list: [],
+      siteList: [],  //站点列表
+      list: [],      //页面列表
       total: 50,
       params: {
-        page: 1,    //默认第一页
-        size: 10    //这个用户选择每页显示多少条
+        page: 1,     //默认第一页
+        size: 10,     //这个用户选择每页显示多少条
+        siteId: '',
+        pageAliase: ""
       }
     };
   },
@@ -50,12 +68,24 @@ export default {
     },
     query: function() {
       //调用cms.js中的方法
-      cmsApi.page_list(this.params.page, this.params.size).then((res => {
+      cmsApi.page_list(this.params.page, this.params.size, this.params).then((res => {
         this.list = res.queryResult.list
         this.total = res.queryResult.total
         console.log(this.total);
       }))
     }
+  },
+  created() {
+    this.query();
+    //模拟假数据
+    this.siteList = [
+      {"siteId":"5a751fab6abb5044e0d19ea1","siteName":"门户主站"},
+      {"siteId":"000","siteName":"测试数据"}
+    ];
+
+    //新增返回时记录页数
+    this.params.page = this.$route.query.page;
+    this.params.siteId = this.$route.query.siteId;
   }
 };
 </script>
