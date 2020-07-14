@@ -84,8 +84,11 @@ export default {
     ];
 
     //新增返回时记录页数
-    this.params.page = this.$route.query.page;
-    this.params.siteId = this.$route.query.siteId;
+    if (this.$route.query.page){
+      this.params.page = this.$route.query.page;
+      this.params.siteId = this.$route.query.siteId;
+    }
+
   }
 };
 </script>
