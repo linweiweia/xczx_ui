@@ -18,13 +18,13 @@
 
     <el-table :data="list" style="width: 100%">
       <el-table-column type="index" width="60"></el-table-column>
-      <el-table-column prop="pageName" label="页面名称" width="120"></el-table-column>
+      <el-table-column prop="pageName" label="页面名称" width="250"></el-table-column>
       <el-table-column prop="pageAliase" label="别名" width="120"></el-table-column>
       <el-table-column prop="pageType" label="页面类型" width="150"></el-table-column>
       <el-table-column prop="pageWebPath" label="访问路径" width="250"></el-table-column>
       <el-table-column prop="pagePhysicalPath" label="物理路径" width="250"></el-table-column>
       <el-table-column prop="pageCreateTime" label="创建时间" width="180"></el-table-column>
-      <el-table-column label="操作" width="80">
+      <el-table-column label="操作" width="100">
         <template slot-scope="page">
           <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
           <el-button size="small" type="text" @click="del(page.row.pageId)">删除</el-button>
@@ -73,6 +73,29 @@ export default {
         this.total = res.queryResult.total
         console.log(this.total);
       }))
+    },
+    edit:function(pageId){
+      //打开修改页面
+      this.$router.push({
+        path:'/cms/page/edit/'+pageId
+      })
+    },
+    del:function (pageId) {
+      this.$confirm('您确认删除吗?', '提示', { }).then(() => {
+
+        //调用服务端接口
+        cmsApi.page_del(pageId).then(res=>{
+
+          if(res.success){
+            this.$message.success("删除成功")
+            //刷新页面
+            this.query()
+          }else{
+            this.$message.error("删除失败")
+          }
+        })
+      })
+
     }
   },
   created() {
