@@ -24,10 +24,11 @@
       <el-table-column prop="pageWebPath" label="访问路径" width="250"></el-table-column>
       <el-table-column prop="pagePhysicalPath" label="物理路径" width="250"></el-table-column>
       <el-table-column prop="pageCreateTime" label="创建时间" width="180"></el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="200">
         <template slot-scope="page">
           <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
           <el-button size="small" type="text" @click="del(page.row.pageId)">删除</el-button>
+          <el-button size="small" type="text" @click="preview(page.row.pageId)">页面预览</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -95,7 +96,9 @@ export default {
           }
         })
       })
-
+    },
+    preview:function (pageId) {
+      window.open("http://127.0.0.1/cms/preview/"+pageId)
     }
   },
   created() {
